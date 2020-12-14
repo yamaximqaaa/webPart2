@@ -1,0 +1,26 @@
+version: "3"
+services:
+
+  db:
+    restart: always
+    image: postgres:11.0
+    expose:
+      - 5432
+#    environment:
+#      POSTGRES_USER: postgres
+#      POSTGRES_PASSWORD: postgres
+#      POSTGRES_DB: db
+#      PGDATA: /tmp
+#    volumes:
+#      - ./tmp/postgresql_data:/var/lib/postgresql/data
+
+  web:
+    restart: always
+    build: .
+    volumes:
+      - .:/app
+    ports:
+      - 5000:5000
+    depends_on:
+      - db
+    command: python3 /app/library/manage.py runserver 0.0.0.0:5000
